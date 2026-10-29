@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Personality Rights and AI</title>
+<meta name="description" content="Content analysis of 20 Delhi High Court personality-rights decisions (Sept 2021 to Aug 2026) and how the doctrine has evolved in response to AI deepfakes, voice cloning and chatbots.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #fcfcfb;
+  --panel: #ffffff;
+  --ink: #0b0b0b;
+  --ink2: #52514e;
+  --muted: #7a7974;
+  --line: #e4e3df;
+  --accent: #1c5cab;
+  --s1: #2a78d6;
+  --s2: #eb6834;
+  --s3: #1baf7a;
+  --neutral: #c9c8c2;
+  --chip: #eef4fc;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #1a1a19;
+    --panel: #232322;
+    --ink: #f0efec;
+    --ink2: #c3c2b7;
+    --muted: #9a998f;
+    --line: #3a3a37;
+    --accent: #86b6ef;
+    --s1: #3987e5;
+    --s2: #d95926;
+    --s3: #199e70;
+    --neutral: #5d5c57;
+    --chip: #22324a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #1a1a19;
+  --panel: #232322;
+  --ink: #f0efec;
+  --ink2: #c3c2b7;
+  --muted: #9a998f;
+  --line: #3a3a37;
+  --accent: #86b6ef;
+  --s1: #3987e5;
+  --s2: #d95926;
+  --s3: #199e70;
+  --neutral: #5d5c57;
+  --chip: #22324a;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 16px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 16px; }
+header { border-bottom: 1px solid var(--line); padding: 48px 0 32px; }
+.eyebrow { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin: 0 0 12px; }
+h1, h2, h3 { font-family: "Source Serif 4", Georgia, serif; line-height: 1.2; margin: 0; }
+h1 { font-size: clamp(28px, 5vw, 44px); max-width: 22ch; }
+h2 { font-size: clamp(22px, 3.4vw, 30px); margin-bottom: 12px; }
+h3 { font-size: 19px; margin-bottom: 6px; }
+.lede { color: var(--ink2); font-size: 18px; max-width: 64ch; margin: 16px 0 0; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; color: var(--muted); font-size: 14px; }
+section { padding: 40px 0; border-bottom: 1px solid var(--line); }
+p { max-width: 70ch; }
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 28px; }
+.stat { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+.stat b { display: block; font-family: "Source Serif 4", Georgia, serif; font-size: 34px; line-height: 1; }
+.stat span { color: var(--ink2); font-size: 14px; }
+.timeline { list-style: none; padding: 0; margin: 20px 0 0; display: grid; gap: 14px; }
+.phase { background: var(--panel); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: 8px; padding: 16px 18px; }
+.phase .when { font-size: 13px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
+.phase p { margin: 6px 0 0; color: var(--ink2); }
+.cases { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { background: var(--chip); color: var(--ink); border-radius: 999px; padding: 2px 10px; font-size: 13px; }
+.chart-card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 18px; margin-top: 18px; }
+.chart-card .sub { color: var(--ink2); font-size: 14px; margin: 2px 0 12px; }
+.chart-box { position: relative; height: 300px; }
+.reading { margin-top: 12px; color: var(--ink2); font-size: 15px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.list { margin: 8px 0 0; padding-left: 20px; color: var(--ink2); }
+.list li { margin: 6px 0; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 16px 0 12px; }
+.filters button { font: inherit; font-size: 14px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 14px; cursor: pointer; }
+.filters button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--bg); }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 14px; }
+th, td { text-align: left; vertical-align: top; padding: 10px 12px; border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--ink2); background: var(--bg); position: sticky; top: 0; }
+tr:last-child td { border-bottom: none; }
+td a { color: var(--accent); }
+.tag { display: inline-block; font-size: 12px; font-weight: 600; border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+.t-Allowed { background: color-mix(in srgb, var(--s1) 18%, transparent); }
+.t-Partly { background: color-mix(in srgb, var(--s2) 22%, transparent); }
+.t-Dismissed { background: color-mix(in srgb, var(--s3) 22%, transparent); }
+.ai { font-size: 12px; color: var(--muted); }
+footer { padding: 32px 0 56px; color: var(--muted); font-size: 14px; }
+footer p { max-width: none; }
+.theme-toggle { position: fixed; top: 12px; right: 12px; font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--panel); color: var(--ink); border-radius: 999px; padding: 4px 12px; cursor: pointer; }
+@media (max-width: 760px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .grid2 { grid-template-columns: 1fr; }
+  header { padding-top: 56px; }
+}
+</style>
+</head>
+<body>
+<button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch colour theme">Theme</button>
+
+<header>
+  <div class="wrap">
+    <p class="eyebrow">AI-assisted content analysis of judgments · Option 2</p>
+    <h1>Personality Rights and Artificial Intelligence: A Doctrinal Analysis of Judicial Protection</h1>
+    <p class="lede">How the Delhi High Court has protected a person's name, face and voice between September 2021 and August 2026, and how that protection changed once deepfakes, voice clones and AI chatbots arrived.</p>
+    <div class="meta">
+      <span>Court: High Court of Delhi</span>
+      <span>Period: 01-09-2021 to 31-08-2026</span>
+      <span>Judgments coded: 20</span>
+      <span>Team Persona: Shahnoor Sheikh, Ankita, Tanishkaa</span>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap">
+    <h2>The short answer</h2>
+    <p>Personality rights in India still have no statute behind them. Everything in this dataset was built by judges, almost all of it by single judges at the interim stage. Read in date order, the 20 decisions tell a story in four phases: the court first confirmed a commercial right over celebrity identity, then drew limits around free speech and death, then stretched the right to cover AI misuse, and finally, from late 2025, began trimming overbroad claims so that parody, criticism and fan culture survive.</p>
+    <ol class="timeline" id="timeline"></ol>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>What the data shows</h2>
+    <p>Hover over a bar for the exact count. The same three charts are saved as PNG files in the repository for the README.</p>
+
+    <div class="chart-card">
+      <h3>1. Judgments per year</h3>
+      <p class="sub">Number of coded decisions by year of decision (2026 covers January to August only)</p>
+      <div class="chart-box"><canvas id="c1" role="img" aria-label="Bar chart of judgments per year: 2021 none, 2022 one, 2023 three, 2024 three, 2025 six, 2026 seven."></canvas></div>
+      <p class="reading">Litigation grows sharply. There is nothing from late 2021, one order in 2022, and then a steady climb to seven orders in just the first eight months of 2026. The selection understates the real jump: the court's website shows dozens more celebrity suits in 2025 and 2026 that we did not code.</p>
+    </div>
+
+    <div class="chart-card">
+      <h3>2. Outcomes by year</h3>
+      <p class="sub">Allowed, partly allowed or dismissed, stacked by year</p>
+      <div class="chart-box"><canvas id="c2" role="img" aria-label="Stacked bar chart of outcomes by year."></canvas></div>
+      <p class="reading">Plaintiffs almost always win something: 18 of 20 orders give at least some relief. The change is in how much. Both outright refusals came in 2023. After that, the share of partly allowed orders rises, from one in 2024 to three of seven in 2026, as the court carves out parody, fan pages and political satire.</p>
+    </div>
+
+    <div class="chart-card">
+      <h3>3. Orders that expressly deal with AI</h3>
+      <p class="sub">The injunction or reasoning covers AI, deepfakes, voice cloning or AI chatbots</p>
+      <div class="chart-box"><canvas id="c3" role="img" aria-label="Stacked bar chart of orders dealing with AI by year."></canvas></div>
+      <p class="reading">Anil Kapoor (September 2023) is the turning point. Before it, no order in the dataset mentions AI. From 2024 every order does, until the two 2026 calibration orders (Alakh Pandey and Janhvi Kapoor), which focus on overbreadth rather than technology.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Doctrinal trends</h2>
+    <div class="grid2">
+      <div>
+        <h3>From products to synthetic media</h3>
+        <ul class="list">
+          <li>2022: the harm is a stranger selling goods or lotteries with a celebrity's image (Amitabh Bachchan, relying on Titan Industries).</li>
+          <li>2023 to 2024: the harm becomes technological: morphing, AI voice imitation, an AI chatbot of Jackie Shroff, doctored health ads using a surgeon's face.</li>
+          <li>2025 to 2026: AI is now a standard clause. Injunctions name "AI, generative AI, machine learning, deepfakes and face morphing", and target AI companion chatbots (Sonakshi Sinha) and paid voice-cloning tools (Allu Arjun).</li>
+        </ul>
+      </div>
+      <div>
+        <h3>From celebrities to anyone with a public persona</h3>
+        <ul class="list">
+          <li>Protection spreads beyond film stars to a heart surgeon, a news anchor, a spiritual leader, an ed-tech founder and two MPs.</li>
+          <li>The legal anchor also shifts, from common-law passing off and endorsement value to dignity and privacy under Article 21 (Anil Kapoor, Shashi Tharoor).</li>
+        </ul>
+      </div>
+      <div>
+        <h3>New remedies for the internet</h3>
+        <ul class="list">
+          <li>John Doe orders against unknown uploaders become routine.</li>
+          <li>"Dynamic+" injunctions (Sadhguru) let new mirror sites be blocked without fresh orders.</li>
+          <li>Platforms are given 36 to 72 hour takedown deadlines and told to disclose uploaders' details.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>The counter-trend: calibration</h3>
+        <ul class="list">
+          <li>Parody and lampooning carved out (Karan Johar, relying on D.M. Entertainment).</li>
+          <li>Whole fan pages not taken down (Hrithik Roshan, Janhvi Kapoor).</li>
+          <li>Political satire protected; "politicians must not be thin-skinned" (Raghav Chadha).</li>
+          <li>Relief limited to three categories: vulgar portrayal, monetisation, impersonation (Alakh Pandey); blanket order on 6,884 URLs refused (Janhvi Kapoor).</li>
+        </ul>
+      </div>
+    </div>
+    <p class="reading">Precedent use mirrors these phases. Early orders lean on R. Rajagopal and Titan Industries. Mid-period AI orders lean on Anil Kapoor (cited as the main authority in three later orders). The calibration orders go back further, to D.M. Entertainment v. Baby Gift House (2010) and its free-speech exception, which is the main authority in three of the late orders. Several 2026 orders cite no personality-rights precedent at all, a sign the court now treats the right as settled at the interim stage.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>All 20 judgments</h2>
+    <div class="filters" role="group" aria-label="Filter by outcome">
+      <button type="button" data-f="all" aria-pressed="true">All</button>
+      <button type="button" data-f="Allowed" aria-pressed="false">Allowed</button>
+      <button type="button" data-f="Partly allowed" aria-pressed="false">Partly allowed</button>
+      <button type="button" data-f="Dismissed" aria-pressed="false">Dismissed</button>
+      <button type="button" data-f="ai" aria-pressed="false">Deals with AI</button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Date</th><th>Case</th><th>Outcome</th><th>Holding in one line</th><th>Main precedent</th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Method and limits</h2>
+    <p>We searched the Delhi High Court judgment portal and Indian Kanoon for "personality rights", "publicity rights", "deepfake", "voice cloning" and "artificial intelligence", and used legal news reports to find orders we had missed. We kept reasoned orders only and picked 20 that span the period, including every refusal we found. Each order was coded in the Dataset template; the full data is in <a href="data.csv">data.csv</a> and <a href="data.xlsx">data.xlsx</a>.</p>
+    <p>Almost every decision here is an interim order by a single judge, often passed ex parte. None is a final trial judgment and none comes from a Division Bench, so the "law" described is provisional. Twenty orders are a sample, not a census, and the per-year counts reflect our selection as much as the court's docket.</p>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>Data: data.csv in this repository. Charts drawn with Chart.js. AI use is disclosed in the README.</p>
+  </div>
+</footer>
+
+<script>
+const CASES = [{"name": "Amitabh Bachchan v. Rajat Nagi & Ors.", "cite": "CS(COMM) 819/2022", "date": "25-11-2022", "year": 2022, "outcome": "Allowed", "holding": "Ex parte injunction granted; unauthorised commercial use of his name, image, voice and persona restrained.", "prec": "Titan Industries v. Ramkumar Jewellers (2012)", "link": "https://delhihighcourt.nic.in/app/showlogo/1669383973237_80487_2022.pdf/2022", "ai": false}, {"name": "Digital Collectibles Pte Ltd & Ors. v. Galactus Funware Technology Pvt Ltd & Anr.", "cite": "2023:DHC:2796; CS(COMM) 108/2023", "date": "26-04-2023", "year": 2023, "outcome": "Dismissed", "holding": "Interim injunction refused; public information and creative cards are free speech and imply no false endorsement.", "prec": "C.B.C. Distributing v. MLB Advanced Media (US, 2007)", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/108/2023/26-04-2023", "ai": false}, {"name": "Krishna Kishore Singh v. Sarla A. Saraogi & Ors.", "cite": "CS(COMM) 187/2021 (I.A. 10551/2021)", "date": "11-07-2023", "year": 2023, "outcome": "Dismissed", "holding": "Injunction refused; privacy and personality rights end with death and are not inherited; damages claim survives.", "prec": "R. Rajagopal v. State of T.N. (1994)", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/187/2021/11-07-2023", "ai": false}, {"name": "Anil Kapoor v. Simply Life India & Ors.", "cite": "CS(COMM) 652/2023", "date": "20-09-2023", "year": 2023, "outcome": "Allowed", "holding": "Ex parte injunction granted expressly covering AI, deepfakes and morphing; domains and links ordered blocked.", "prec": "R. Rajagopal v. State of T.N. (1994)", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/652/2023/20-09-2023", "ai": true}, {"name": "Jaikishan Kakubhai Saraf alias Jackie Shroff v. The Peppy Store & Ors.", "cite": "2024:DHC:4046; CS(COMM) 389/2024", "date": "15-05-2024", "year": 2024, "outcome": "Partly allowed", "holding": "Injunction granted incl. against the AI chatbot, but a YouTube tribute video was left up as artistic expression.", "prec": "None identified", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/389/2024/15-05-2024", "ai": true}, {"name": "Dr Devi Prasad Shetty & Anr. v. Medicine Me & Ors.", "cite": "CS(COMM) 1053/2024", "date": "28-11-2024", "year": 2024, "outcome": "Allowed", "holding": "Ex parte injunction granted; misuse of his persona, incl. by AI or deepfake, and the hospital's marks restrained.", "prec": "None on personality rights", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS%28COMM%29/1053/2024/28-11-2024", "ai": true}, {"name": "Rajat Sharma & Anr. v. Tamara Doc & Ors.", "cite": "CS(COMM) 1147/2024", "date": "18-12-2024", "year": 2024, "outcome": "Allowed", "holding": "Ex parte injunction granted against misuse of his name, voice and likeness, incl. via AI and deepfakes.", "prec": "None identified", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/1147/2024/18-12-2024", "ai": true}, {"name": "Sadhguru Jagadish Vasudev & Anr. v. Igor Isakov & Ors.", "cite": "CS(COMM) 578/2025", "date": "30-05-2025", "year": 2025, "outcome": "Allowed", "holding": "'Dynamic+' John Doe injunction granted so new mirror sites and channels can be blocked as they appear.", "prec": "None identified", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/578/2025/30-05-2025", "ai": true}, {"name": "Aishwarya Rai Bachchan v. Aishwaryaworld.com & Ors.", "cite": "CS(COMM) 956/2025", "date": "09-09-2025", "year": 2025, "outcome": "Allowed", "holding": "Ex parte injunction granted; misuse through AI, generative AI and deepfakes harms dignity as well as money.", "prec": "Anil Kapoor v. Simply Life India (2023)", "link": "https://delhihighcourt.nic.in/app/showlogo/1757574137_80607de07279ac5a_687_9562025.pdf/2025", "ai": true}, {"name": "Abhishek Bachchan v. The Bollywood Tee Shop & Ors.", "cite": "CS(COMM) 960/2025", "date": "10-09-2025", "year": 2025, "outcome": "Allowed", "holding": "Ex parte injunction granted; AI depictions in misleading or vulgar settings also intrude on privacy.", "prec": "Anil Kapoor v. Simply Life India (2023)", "link": "https://delhihighcourt.nic.in/app/showlogo/1757609308_fb4ef0bfaba83050_687_9602025.pdf/2025", "ai": true}, {"name": "Karan Johar v. Ashok Kumar/John Doe & Ors.", "cite": "CS(COMM) 974/2025", "date": "17-09-2025", "year": 2025, "outcome": "Partly allowed", "holding": "Vulgar posts and AI misuse taken down; posts that were parody or lampooning were left up.", "prec": "D.M. Entertainment v. Baby Gift House (2010)", "link": "https://delhihighcourt.nic.in/app/showlogo/1758278910_3b03d8dfb4ebb59d_589_9742025.pdf/2025", "ai": true}, {"name": "Akkineni Nagarjuna v. www.bfxxx.org & Ors.", "cite": "CS(COMM) 1023/2025", "date": "25-09-2025", "year": 2025, "outcome": "Allowed", "holding": "Ex parte injunction granted; covers AI, deepfakes and face morphing; URLs to be removed in 72 hours.", "prec": "Amitabh Bachchan v. Rajat Nagi (2022)", "link": "https://delhihighcourt.nic.in/app/showlogo/1759247515_84c477b66c0d296a_687_10232025.pdf/2025", "ai": true}, {"name": "Hrithik Roshan v. Ashok Kumar/John Doe & Ors.", "cite": "CS(COMM) 1107/2025", "date": "15-10-2025", "year": 2025, "outcome": "Partly allowed", "holding": "Infringing posts removed, but whole fan pages were not taken down; only specific posts were.", "prec": "D.M. Entertainment v. Baby Gift House (2010)", "link": "https://delhihighcourt.nic.in/app/showlogo/1760792269_80e5c55475b14e2d_589_11072025.pdf/2025", "ai": true}, {"name": "Sonakshi Sinha v. Character Technologies Inc. & Ors.", "cite": "CS(COMM) 275/2026", "date": "20-03-2026", "year": 2026, "outcome": "Allowed", "holding": "Ex parte injunction granted incl. against AI chatbot platforms; URLs to be removed within 36 hours.", "prec": "Anil Kapoor v. Simply Life India (2023)", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/275/2026/20-03-2026", "ai": true}, {"name": "Allu Arjun v. Frankly Retail Pvt Ltd & Ors.", "cite": "CS(COMM) 403/2026", "date": "17-04-2026", "year": 2026, "outcome": "Allowed", "holding": "Ex parte injunction granted over his name, likeness and marks, incl. AI, voice cloning and deepfakes.", "prec": "None on personality rights", "link": "https://delhihighcourt.nic.in/app/showlogo/1776522646_bb9075689e63232c_594_4032026.pdf/2026", "ai": true}, {"name": "Arjun Kapoor v. Artist Booking Company & Ors.", "cite": "CS(COMM) 454/2026", "date": "29-04-2026", "year": 2026, "outcome": "Allowed", "holding": "Injunction granted; parody may cover a few posts, but AI explicit content must come down at once.", "prec": "None on personality rights", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(COMM)/454/2026/29-04-2026", "ai": true}, {"name": "Shashi Tharoor v. Ashok Kumar & Ors.", "cite": "CS(OS) 414/2026", "date": "08-05-2026", "year": 2026, "outcome": "Allowed", "holding": "Injunction granted; his name, voice, speaking style and vocabulary are protected under Arts 19 and 21.", "prec": "None identified", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(OS)/414/2026/08-05-2026", "ai": true}, {"name": "Raghav Chadha v. Ashok Kumar John Doe & Ors.", "cite": "CS(OS) 466/2026 (I.A. 14417/2026)", "date": "01-07-2026", "year": 2026, "outcome": "Partly allowed", "holding": "Only 6 of 52 posts (vulgar ones) removed; political satire stays; politicians must not be thin-skinned.", "prec": "Kartar Singh v. State of Punjab (1956)", "link": "https://delhihighcourt.nic.in/app/downloadOrderbByDate/CS(OS)/466/2026/01-07-2026", "ai": true}, {"name": "Alakh Pandey v. John Doe(s) & Ors.", "cite": "CS(COMM) 835/2026", "date": "05-08-2026", "year": 2026, "outcome": "Partly allowed", "holding": "Relief limited to vulgar portrayal, monetisation and impersonation; parody, caricature and reporting protected.", "prec": "D.M. Entertainment v. Baby Gift House (2010)", "link": "https://delhihighcourt.nic.in/app/showlogo/1787322052_8f2b50ba57ea131b_ajb_8352026.pdf/2026", "ai": false}, {"name": "Janhvi Kapoor v. Ashok Kumar/John Doe & Ors.", "cite": "CS(COMM) 868/2026", "date": "11-08-2026", "year": 2026, "outcome": "Partly allowed", "holding": "Blanket order refused as over-broad; only 552 pornographic URLs removed; rest to be sorted into categories.", "prec": "None on personality rights", "link": "https://delhihighcourt.nic.in/app/showlogo/1787322054_f62903698514298c_ajb_8682026.pdf/2026", "ai": false}];
+const YEARS = [2021, 2022, 2023, 2024, 2025, 2026];
+
+const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+const count = (fn) => YEARS.map(y => CASES.filter(c => c.year === y && fn(c)).length);
+
+// Stats
+const stats = [
+  [CASES.length, "judgments coded"],
+  [CASES.filter(c => c.ai).length, "deal expressly with AI"],
+  [CASES.filter(c => c.outcome === "Partly allowed").length, "only partly allowed"],
+  [CASES.filter(c => c.outcome === "Dismissed").length, "dismissed outright"],
+];
+document.getElementById("stats").innerHTML = stats.map(([n, l]) => `<div class="stat"><b>${n}</b><span>${l}</span></div>`).join("");
+
+// Timeline
+const PHASES = [
+  ["2022", "1. The commercial foundation", "The court confirms that a celebrity can stop strangers profiting from his name, image and voice.", ["Amitabh Bachchan"]],
+  ["2023", "2. Limits drawn", "Free speech and public information defeat a publicity claim, and personality rights are held to die with the person.", ["Digital Collectibles", "Krishna Kishore Singh"]],
+  ["Sept 2023 to 2025", "3. The AI turn", "Protection is extended to deepfakes, face morphing, voice cloning and AI chatbots, and to non-actors such as doctors, journalists and spiritual leaders.", ["Anil Kapoor", "Jackie Shroff", "Devi Shetty", "Rajat Sharma", "Sadhguru", "Aishwarya Rai", "Abhishek Bachchan", "Nagarjuna"]],
+  ["Late 2025 to Aug 2026", "4. Calibration", "AI injunctions continue, but the court starts refusing blanket orders and protects parody, fan pages and political satire.", ["Karan Johar", "Hrithik Roshan", "Sonakshi Sinha", "Allu Arjun", "Arjun Kapoor", "Shashi Tharoor", "Raghav Chadha", "Alakh Pandey", "Janhvi Kapoor"]],
+];
+document.getElementById("timeline").innerHTML = PHASES.map(([w, t, d, cs]) =>
+  `<li class="phase"><div class="when">${w}</div><h3>${t}</h3><p>${d}</p><div class="cases">${cs.map(c => `<span class="chip">${c}</span>`).join("")}</div></li>`).join("");
+
+// Table
+function esc(s) { return String(s).replace(/[&<>"]/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch])); }
+function renderRows(f) {
+  const rows = CASES.filter(c => f === "all" ? true : f === "ai" ? c.ai : c.outcome === f);
+  document.getElementById("rows").innerHTML = rows.map(c => `<tr>
+    <td style="white-space:nowrap">${c.date}</td>
+    <td><a href="${esc(c.link)}" target="_blank" rel="noopener">${esc(c.name)}</a><br><span class="ai">${esc(c.cite)}${c.ai ? " · AI" : ""}</span></td>
+    <td><span class="tag t-${c.outcome.split(" ")[0]}">${c.outcome}</span></td>
+    <td>${esc(c.holding)}</td>
+    <td>${esc(c.prec)}</td></tr>`).join("");
+}
+document.querySelectorAll(".filters button").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".filters button").forEach(x => x.setAttribute("aria-pressed", "false"));
+  b.setAttribute("aria-pressed", "true");
+  renderRows(b.dataset.f);
+}));
+renderRows("all");
+
+// Charts
+let charts = [];
+function drawCharts() {
+  charts.forEach(c => c.destroy());
+  charts = [];
+  if (!window.Chart) {
+    // Fallback: show the PNG versions if the chart library could not load
+    [["c1", "chart1-per-year.png"], ["c2", "chart2-outcomes-by-year.png"], ["c3", "chart3-ai-orders.png"]].forEach(([id, src]) => {
+      const cv = document.getElementById(id);
+      if (!cv) return;
+      const img = document.createElement("img");
+      img.src = src; img.alt = cv.getAttribute("aria-label"); img.style.cssText = "width:100%;height:auto;border-radius:6px";
+      cv.parentElement.style.height = "auto";
+      cv.replaceWith(img);
+    });
+    return;
+  }
+  const ink2 = css("--ink2"), line = css("--line"), ink = css("--ink"), surf = css("--panel");
+  Chart.defaults.font.family = "Inter, system-ui, sans-serif";
+  Chart.defaults.color = ink2;
+  const axes = {
+    x: { grid: { display: false }, border: { color: line }, ticks: { color: ink2 } },
+    y: { beginAtZero: true, suggestedMax: 8, ticks: { stepSize: 1, color: ink2 }, grid: { color: line }, border: { display: false }, stacked: true },
+  };
+  const bar = (label, data, color) => ({ label, data, backgroundColor: color, borderColor: surf, borderWidth: 2, borderRadius: 4, borderSkipped: false, maxBarThickness: 64 });
+  const opts = (legend) => ({
+    responsive: true, maintainAspectRatio: false,
+    interaction: { mode: "index", intersect: false },
+    plugins: { legend: { display: legend, position: "top", align: "start", labels: { color: ink, boxWidth: 12, boxHeight: 12 } },
+               tooltip: { callbacks: { footer: (items) => legend ? "Total: " + items.reduce((s, i) => s + i.parsed.y, 0) : "" } } },
+    scales: { x: { ...axes.x, stacked: true }, y: axes.y },
+  });
+  charts.push(new Chart(document.getElementById("c1"), { type: "bar",
+    data: { labels: YEARS, datasets: [bar("Judgments", count(() => true), css("--s1"))] }, options: opts(false) }));
+  charts.push(new Chart(document.getElementById("c2"), { type: "bar",
+    data: { labels: YEARS, datasets: [
+      bar("Allowed", count(c => c.outcome === "Allowed"), css("--s1")),
+      bar("Partly allowed", count(c => c.outcome === "Partly allowed"), css("--s2")),
+      bar("Dismissed", count(c => c.outcome === "Dismissed"), css("--s3")),
+    ] }, options: opts(true) }));
+  charts.push(new Chart(document.getElementById("c3"), { type: "bar",
+    data: { labels: YEARS, datasets: [
+      bar("Deals with AI", count(c => c.ai), css("--s1")),
+      bar("No AI element", count(c => !c.ai), css("--neutral")),
+    ] }, options: opts(true) }));
+}
+drawCharts();
+
+// Theme toggle
+const root = document.documentElement;
+try { const t = localStorage.getItem("theme"); if (t) root.dataset.theme = t; } catch (e) {}
+document.getElementById("themeToggle").addEventListener("click", () => {
+  const dark = root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme = dark ? "light" : "dark";
+  try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
+  drawCharts();
+});
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change", drawCharts);
+drawCharts();
+</script>
+</body>
+</html>
